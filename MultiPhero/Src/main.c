@@ -39,7 +39,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "stm32f4xx_hal.h"
-
+#include "delay.h"
+#include "ColiasCamera.h"
 /* USER CODE BEGIN Includes */
 
 /* USER CODE END Includes */
@@ -118,11 +119,19 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-
+	  HAL_GPIO_TogglePin(LED1_GPIO_Port,LED1_Pin);
+	  //HAL_Delay(500);
+		delay_ms(100);
   /* USER CODE END WHILE */
-
+    
   /* USER CODE BEGIN 3 */
-
+		while(Camera_Init(Res_QQCIF)){
+			
+			delay_ms(100);
+			HAL_GPIO_TogglePin(LED2_GPIO_Port,LED2_Pin);
+			delay_ms(300);
+			HAL_GPIO_TogglePin(LED2_GPIO_Port,LED2_Pin);
+		}
   }
   /* USER CODE END 3 */
 

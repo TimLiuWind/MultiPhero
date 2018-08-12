@@ -10,6 +10,11 @@
 
 #define Res_QQCIF 	6
 
+#define Image_Width 99
+#define Image_Height 72
+
+
+
 uint8_t Camera_WriteReg(uint8_t regID, uint8_t regDat);
 uint8_t Camera_ReadReg(uint8_t regID, __IO uint8_t *regDat);
 void Camera_Reset(void);

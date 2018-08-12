@@ -1,4 +1,5 @@
 #include "ColiasCamera.h"
+uint16_t Image[3][Image_Height][Image_Width];
 
 const uint8_t CameraInitReg[]={
 	0x11,0x80,//CLKRC
@@ -22,28 +23,28 @@ const uint8_t CameraInitReg[]={
 uint8_t Camera_WriteReg(uint8_t regID, uint8_t regDat)
 {
 	uint8_t a=4;
-	a = sI2C_Start();//·
+	a = sI2C_Start();
 	if(!a)
 	{
-		if(sI2C_Write(0x42)==0)//
+		if(sI2C_Write(0x42)==0)
 		{
-			sI2C_Stop();//·
-			return 1;//´
+			sI2C_Stop();
+			return 1;
 		}
 		delay_us(150);
-		if(sI2C_Write(regID)==0)//»ı´æÆ÷ID
+		if(sI2C_Write(regID)==0)
 		{
-			sI2C_Stop();//·¢ËÍSCCB ×ÜÏßÍ£Ö¹´«ÊäÃüÁî
-			return 2;//´íÎó·µ»Ø
+			sI2C_Stop();
+			return 2;
 		}
 		delay_us(150);
-		if(sI2C_Write(regDat)==0)//Ğ´Êı¾İµ½»ı´æÆ÷
+		if(sI2C_Write(regDat)==0)
 		{
-			sI2C_Stop();//·¢ËÍSCCB ×ÜÏßÍ£Ö¹´«ÊäÃüÁî
-			return 3;//´íÎó·µ»Ø
+			sI2C_Stop();
+			return 3;
 		}
-		sI2C_Stop();//·¢ËÍSCCB ×ÜÏßÍ£Ö¹´«ÊäÃüÁî	
-		return 0;//³É¹¦·µ»Ø
+		sI2C_Stop();
+		return 0;
 	}
 	else
 		return 1;
@@ -51,33 +52,33 @@ uint8_t Camera_WriteReg(uint8_t regID, uint8_t regDat)
 
 uint8_t Camera_ReadReg(uint8_t regID, __IO uint8_t *regDat)
 {
-	//Í¨¹ıĞ´²Ù×÷ÉèÖÃ¼Ä´æÆ÷µØÖ·
+	
 	sI2C_Start();
-	if(sI2C_Write(0x42)==0)//Ğ´µØÖ·
+	if(sI2C_Write(0x42)==0)
 	{
-		sI2C_Stop();//·¢ËÍSCCB ×ÜÏßÍ£Ö¹´«ÊäÃüÁî
-		return 1;//´íÎó·µ»Ø
+		sI2C_Stop();
+		return 1;
 	}
 	delay_us(150);
-  	if(sI2C_Write(regID)==0)//»ı´æÆ÷ID
+  	if(sI2C_Write(regID)==0)
 	{
-		sI2C_Stop();//·¢ËÍSCCB ×ÜÏßÍ£Ö¹´«ÊäÃüÁî
-		return 2;//´íÎó·µ»Ø
+		sI2C_Stop();
+		return 2;
 	}
-	sI2C_Stop();//·¢ËÍSCCB ×ÜÏßÍ£Ö¹´«ÊäÃüÁî	
+	sI2C_Stop();
 	delay_us(150);	
-	//ÉèÖÃ¼Ä´æÆ÷µØÖ·ºó£¬²ÅÊÇ¶Á
+	
 	sI2C_Start();
-	if(sI2C_Write(0x43)==0)//¶ÁµØÖ·
+	if(sI2C_Write(0x43)==0)
 	{
-		sI2C_Stop();//·¢ËÍSCCB ×ÜÏßÍ£Ö¹´«ÊäÃüÁî
-		return 3;//´íÎó·µ»Ø
+		sI2C_Stop();
+		return 3;
 	}
 	delay_us(150);
-  	*regDat=sI2C_Read();//·µ»Ø¶Áµ½µÄÖµ
-  	noAck();//·¢ËÍNACKÃüÁî
-  	sI2C_Stop();//·¢ËÍSCCB ×ÜÏßÍ£Ö¹´«ÊäÃüÁî
-  	return 0;//³É¹¦·µ»Ø
+  	*regDat=sI2C_Read();
+  	noAck();
+  	sI2C_Stop();
+  	return 0;
 }
 
 

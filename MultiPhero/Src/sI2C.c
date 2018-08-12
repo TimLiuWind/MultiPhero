@@ -27,14 +27,27 @@ void sI2C_SDA_IN(void)
 
 uint8_t sI2C_Start(void)
 {
-//  volatile uint8_t i=0;
+  volatile uint8_t i=0;
 	sI2C_SDA_OUT();
 	SDA_H;
 	delay_us(150);
 	SCL_H;
 	delay_us(150);
+	while(!SDA_STATE){
+	   i++;
+		if(i>=249){
+			return 1;		
+		}
+	}
 	SDA_L;
 	delay_us(150);
+	i=0;
+	while((SDA_STATE == 1) && (i<250))     
+	{
+		i++;                                                                                                        
+		if(i==249)                                                                                        
+		return (1);
+	} 
 	SCL_L;
 	delay_us(150);
 	return 0;

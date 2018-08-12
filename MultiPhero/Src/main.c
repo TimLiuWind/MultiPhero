@@ -39,10 +39,11 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "stm32f4xx_hal.h"
+
+/* USER CODE BEGIN Includes */
 #include "delay.h"
 #include "ColiasCamera.h"
-/* USER CODE BEGIN Includes */
-
+#include "Debug.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -117,22 +118,26 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
-  {
-	  HAL_GPIO_TogglePin(LED1_GPIO_Port,LED1_Pin);
+
 	  //HAL_Delay(500);
-		delay_ms(100);
+
   /* USER CODE END WHILE */
-    
+
   /* USER CODE BEGIN 3 */
-		while(Camera_Init(Res_QQCIF)){
+	while(Camera_Init(Res_QQCIF)){
 			
 			delay_ms(100);
-			HAL_GPIO_TogglePin(LED2_GPIO_Port,LED2_Pin);
+			HAL_GPIO_TogglePin(LED1_GPIO_Port,LED1_Pin);
 			delay_ms(300);
-			HAL_GPIO_TogglePin(LED2_GPIO_Port,LED2_Pin);
-		}
-  }
+			HAL_GPIO_TogglePin(LED1_GPIO_Port,LED1_Pin);
+	}
+	
+	while(1){
+		HAL_GPIO_TogglePin(LED2_GPIO_Port,LED2_Pin);
+//		delay_ms(100);	
+		printf("\n\r UART Printf Example: retarget the C library printf function to the UART\n\r");
+		delay_ms(1000);
+	}
   /* USER CODE END 3 */
 
 }
@@ -386,7 +391,24 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+#if 1
+#pragma import(__use_no_semihosting)                              
+struct __FILE 
+{ 
+	int handle; 
+}; 
+FILE __stdout;         
+void _sys_exit(int x) 
+{ 
+	x = x; 
+} 
+int fputc(int ch, FILE *f)
+{
+  	HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, 0xFFFF);
 
+  	return ch;
+}
+#endif
 /* USER CODE END 4 */
 
 /**

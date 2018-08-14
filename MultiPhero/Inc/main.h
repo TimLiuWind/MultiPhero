@@ -56,12 +56,6 @@
 #define sI2C_SDA_GPIO_Port GPIOE
 #define sI2C_SCL_Pin GPIO_PIN_3
 #define sI2C_SCL_GPIO_Port GPIOE
-#define DCMI_D5_Pin GPIO_PIN_4
-#define DCMI_D5_GPIO_Port GPIOE
-#define DCMI_D6_Pin GPIO_PIN_5
-#define DCMI_D6_GPIO_Port GPIOE
-#define DCMI_D7_Pin GPIO_PIN_6
-#define DCMI_D7_GPIO_Port GPIOE
 #define KEY0_Pin GPIO_PIN_0
 #define KEY0_GPIO_Port GPIOA
 #define KEY0_EXTI_IRQn EXTI0_IRQn
@@ -70,26 +64,10 @@
 #define KEY1_EXTI_IRQn EXTI1_IRQn
 #define LED1_Pin GPIO_PIN_2
 #define LED1_GPIO_Port GPIOA
-#define DCMI_HSYNC_Pin GPIO_PIN_4
-#define DCMI_HSYNC_GPIO_Port GPIOA
-#define DCMI_PIXCK_Pin GPIO_PIN_6
-#define DCMI_PIXCK_GPIO_Port GPIOA
 #define LED3_Pin GPIO_PIN_13
 #define LED3_GPIO_Port GPIOD
-#define DCMI_D0_Pin GPIO_PIN_6
-#define DCMI_D0_GPIO_Port GPIOC
-#define DCMI_D1_Pin GPIO_PIN_7
-#define DCMI_D1_GPIO_Port GPIOC
 #define LED2_Pin GPIO_PIN_12
 #define LED2_GPIO_Port GPIOC
-#define DCMI_D2_Pin GPIO_PIN_3
-#define DCMI_D2_GPIO_Port GPIOD
-#define DCMI_VSYNC_Pin GPIO_PIN_7
-#define DCMI_VSYNC_GPIO_Port GPIOB
-#define DCMI_D3_Pin GPIO_PIN_0
-#define DCMI_D3_GPIO_Port GPIOE
-#define DCMI_D4_Pin GPIO_PIN_1
-#define DCMI_D4_GPIO_Port GPIOE
 
 /* ########################## Assert Selection ############################## */
 /**

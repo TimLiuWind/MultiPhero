@@ -7,13 +7,7 @@
 
 
 
-#define SCL_H     (HAL_GPIO_WritePin(sI2C_SCL_GPIO_Port,sI2C_SCL_Pin,GPIO_PIN_SET))
-#define SCL_L     (HAL_GPIO_WritePin(sI2C_SCL_GPIO_Port,sI2C_SCL_Pin,GPIO_PIN_RESET))
 
-#define SDA_H     (HAL_GPIO_WritePin(sI2C_SDA_GPIO_Port,sI2C_SDA_Pin,GPIO_PIN_SET))
-#define SDA_L     (HAL_GPIO_WritePin(sI2C_SDA_GPIO_Port,sI2C_SDA_Pin,GPIO_PIN_RESET))
-
-#define SDA_STATE (HAL_GPIO_ReadPin(sI2C_SDA_GPIO_Port,sI2C_SDA_Pin))
 
 
 void sI2C_SDA_OUT(void);

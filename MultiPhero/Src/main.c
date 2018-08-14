@@ -64,10 +64,10 @@ UART_HandleTypeDef huart1;
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_DMA_Init(void);
-static void MX_DCMI_Init(void);
 static void MX_DMA2D_Init(void);
 static void MX_UART4_Init(void);
 static void MX_USART1_UART_Init(void);
+static void MX_DCMI_Init(void);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
@@ -75,7 +75,11 @@ static void MX_USART1_UART_Init(void);
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
-
+extern uint32_t __IO FrameCounter;
+extern uint32_t __IO ImageCounter;
+extern uint16_t Image[3][Image_Height][Image_Width];
+//extern uint16_t Image[Image_Height][Image_Width];
+uint8_t ImageReady = 0;
 /* USER CODE END 0 */
 
 /**
@@ -86,7 +90,7 @@ static void MX_USART1_UART_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+  uint16_t temp = 0x1234;
   /* USER CODE END 1 */
 
   /* MCU Configuration----------------------------------------------------------*/
@@ -108,10 +112,10 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_DMA_Init();
-  MX_DCMI_Init();
   MX_DMA2D_Init();
   MX_UART4_Init();
   MX_USART1_UART_Init();
+  MX_DCMI_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -132,11 +136,29 @@ int main(void)
 			HAL_GPIO_TogglePin(LED1_GPIO_Port,LED1_Pin);
 	}
 	
+	while(Camera_StartCapture())
+	{
+		printf("DCMI_DMA ErrorStart!\n\r");
+	}
+	printf("DCMI_DMA Start!\n\r");
+	
 	while(1){
-		HAL_GPIO_TogglePin(LED2_GPIO_Port,LED2_Pin);
-//		delay_ms(100);	
-		printf("\n\r UART Printf Example: retarget the C library printf function to the UART\n\r");
-		delay_ms(1000);
+//		HAL_GPIO_TogglePin(LED2_GPIO_Port,LED2_Pin);
+////		delay_ms(100);	
+////		printf("\n\r UART Printf Example: retarget the C library printf function to the UART\n\r");
+//		delay_ms(1000);
+//		printf("The %d th Frame and The %d th Image\n\r",FrameCounter,ImageCounter);
+		if(ImageReady==1)
+		{
+			ImageReady = 0;
+			SendFrames(RGB565);
+//			temp = Image[12][14];
+//			HAL_UART_Transmit(&huart1, (uint8_t *)&temp + 1, 1, 0xFFFF);
+//			HAL_UART_Transmit(&huart1, (uint8_t *)&temp, 1, 0xFFFF);
+//			printf("pixel=%d\r\n",Image[12][14]);
+			HAL_GPIO_TogglePin(LED2_GPIO_Port,LED2_Pin);
+		}
+		 
 	}
   /* USER CODE END 3 */
 
@@ -277,7 +299,7 @@ static void MX_USART1_UART_Init(void)
 {
 
   huart1.Instance = USART1;
-  huart1.Init.BaudRate = 115200;
+  huart1.Init.BaudRate = 256000;
   huart1.Init.WordLength = UART_WORDLENGTH_8B;
   huart1.Init.StopBits = UART_STOPBITS_1;
   huart1.Init.Parity = UART_PARITY_NONE;
@@ -301,7 +323,7 @@ static void MX_DMA_Init(void)
 
   /* DMA interrupt init */
   /* DMA2_Stream1_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA2_Stream1_IRQn, 2, 0);
+  HAL_NVIC_SetPriority(DMA2_Stream1_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(DMA2_Stream1_IRQn);
 
 }

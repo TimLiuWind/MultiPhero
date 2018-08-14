@@ -37,6 +37,12 @@
 
 /* USER CODE BEGIN 0 */
 #include "delay.h"
+#include "ColiasCamera.h"
+
+extern uint32_t __IO FrameCounter;
+extern uint32_t __IO ImageCounter;
+extern uint8_t __IO CurrentImageSlot;
+extern uint8_t ImageReady;
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
@@ -262,7 +268,8 @@ void DMA2_Stream1_IRQHandler(void)
   /* USER CODE END DMA2_Stream1_IRQn 0 */
   HAL_DMA_IRQHandler(&hdma_dcmi);
   /* USER CODE BEGIN DMA2_Stream1_IRQn 1 */
-
+  ImageCounter++;
+	ImageReady = 1;
   /* USER CODE END DMA2_Stream1_IRQn 1 */
 }
 
@@ -276,7 +283,8 @@ void DCMI_IRQHandler(void)
   /* USER CODE END DCMI_IRQn 0 */
   HAL_DCMI_IRQHandler(&hdcmi);
   /* USER CODE BEGIN DCMI_IRQn 1 */
-
+  FrameCounter++;
+	CurrentImageSlot=FrameCounter%3;
   /* USER CODE END DCMI_IRQn 1 */
 }
 

@@ -3,6 +3,7 @@
 
 #include "stm32f4xx_hal.h"
 
+void SendFrames(uint8_t method);
 
 #endif
 

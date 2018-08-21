@@ -57,7 +57,7 @@ UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
-
+uint8_t TestImage[20][30] = {0};
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -77,8 +77,9 @@ static void MX_DCMI_Init(void);
 /* USER CODE BEGIN 0 */
 extern uint32_t __IO FrameCounter;
 extern uint32_t __IO ImageCounter;
-extern uint16_t Image[3][Image_Height][Image_Width];
-//extern uint16_t Image[Image_Height][Image_Width];
+extern uint8_t __IO CurrentImageSlot;
+//extern uint16_t Image[3][Image_Height][Image_Width];
+extern uint16_t Image[Image_Height][Image_Width];
 uint8_t ImageReady = 0;
 /* USER CODE END 0 */
 
@@ -90,7 +91,9 @@ uint8_t ImageReady = 0;
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-  uint16_t temp = 0x1234;
+  uint16_t temp16 = 0x1234;
+	uint8_t temp8;
+	uint16_t i,j;
   /* USER CODE END 1 */
 
   /* MCU Configuration----------------------------------------------------------*/
@@ -135,7 +138,7 @@ int main(void)
 			delay_ms(300);
 			HAL_GPIO_TogglePin(LED1_GPIO_Port,LED1_Pin);
 	}
-	
+//	Camera_Window_Set(10,174,240,320);
 	while(Camera_StartCapture())
 	{
 		printf("DCMI_DMA ErrorStart!\n\r");
@@ -150,11 +153,29 @@ int main(void)
 //		printf("The %d th Frame and The %d th Image\n\r",FrameCounter,ImageCounter);
 		if(ImageReady==1)
 		{
+			Camera_StopCapture();
 			ImageReady = 0;
+//			for(i=0;i<20;i++)
+//			{
+//				for(j=0;j<30;j++)
+//				{
+//					temp8 = 210;
+//					HAL_UART_Transmit(&huart1, (uint8_t *)&temp8, 1, 0xFFFF);
+//				}
+//			}
+//			temp8 = 0xff;
+//			HAL_UART_Transmit(&huart1, (uint8_t *)&temp8, 1, 0xFFFF);
 			SendFrames(RGB565);
+			while(Camera_StartCapture())
+			{
+				HAL_GPIO_TogglePin(LED1_GPIO_Port,LED1_Pin);
+				delay_ms(100);
+			}
 //			temp = Image[12][14];
 //			HAL_UART_Transmit(&huart1, (uint8_t *)&temp + 1, 1, 0xFFFF);
 //			HAL_UART_Transmit(&huart1, (uint8_t *)&temp, 1, 0xFFFF);
+//			printf("\r\n0x1234\r\n");
+//			printf("Imagslot = %d\r\n",CurrentImageSlot);
 //			printf("pixel=%d\r\n",Image[12][14]);
 			HAL_GPIO_TogglePin(LED2_GPIO_Port,LED2_Pin);
 		}

@@ -52,10 +52,10 @@
 
 /* Private define ------------------------------------------------------------*/
 
-#define sI2C_SDA_Pin GPIO_PIN_2
-#define sI2C_SDA_GPIO_Port GPIOE
-#define sI2C_SCL_Pin GPIO_PIN_3
-#define sI2C_SCL_GPIO_Port GPIOE
+#define SCCB_SDA_Pin GPIO_PIN_2
+#define SCCB_SDA_GPIO_Port GPIOE
+#define SCCB_SCL_Pin GPIO_PIN_3
+#define SCCB_SCL_GPIO_Port GPIOE
 #define KEY0_Pin GPIO_PIN_0
 #define KEY0_GPIO_Port GPIOA
 #define KEY0_EXTI_IRQn EXTI0_IRQn

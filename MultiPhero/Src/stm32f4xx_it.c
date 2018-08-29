@@ -48,8 +48,6 @@ extern uint8_t ImageReady;
 /* External variables --------------------------------------------------------*/
 extern DMA_HandleTypeDef hdma_dcmi;
 extern DCMI_HandleTypeDef hdcmi;
-extern DMA2D_HandleTypeDef hdma2d;
-extern UART_HandleTypeDef huart4;
 extern UART_HandleTypeDef huart1;
 
 /******************************************************************************/
@@ -245,20 +243,6 @@ void USART1_IRQHandler(void)
 }
 
 /**
-* @brief This function handles UART4 global interrupt.
-*/
-void UART4_IRQHandler(void)
-{
-  /* USER CODE BEGIN UART4_IRQn 0 */
-
-  /* USER CODE END UART4_IRQn 0 */
-  HAL_UART_IRQHandler(&huart4);
-  /* USER CODE BEGIN UART4_IRQn 1 */
-
-  /* USER CODE END UART4_IRQn 1 */
-}
-
-/**
 * @brief This function handles DMA2 stream1 global interrupt.
 */
 void DMA2_Stream1_IRQHandler(void)
@@ -286,20 +270,6 @@ void DCMI_IRQHandler(void)
   FrameCounter++;
 	CurrentImageSlot=FrameCounter%3;
   /* USER CODE END DCMI_IRQn 1 */
-}
-
-/**
-* @brief This function handles DMA2D global interrupt.
-*/
-void DMA2D_IRQHandler(void)
-{
-  /* USER CODE BEGIN DMA2D_IRQn 0 */
-
-  /* USER CODE END DMA2D_IRQn 0 */
-  HAL_DMA2D_IRQHandler(&hdma2d);
-  /* USER CODE BEGIN DMA2D_IRQn 1 */
-
-  /* USER CODE END DMA2D_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */

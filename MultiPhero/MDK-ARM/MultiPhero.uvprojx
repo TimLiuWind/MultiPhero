@@ -337,7 +337,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F427xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc;     ../Drivers/STM32F4xx_HAL_Driver/Inc;     ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;     ../Drivers/CMSIS/Device/ST/STM32F4xx/Include;     ../Drivers/CMSIS/Include;     ../Application/User</IncludePath>
+              <IncludePath>../Inc;           ../Drivers/STM32F4xx_HAL_Driver/Inc;           ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;           ../Drivers/CMSIS/Device/ST/STM32F4xx/Include;           ../Drivers/CMSIS/Include;           ../Application/User</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -402,14 +402,14 @@
               <FilePath>..\Src\delay.c</FilePath>
             </File>
             <File>
-              <FileName>sI2C.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Src\sI2C.c</FilePath>
-            </File>
-            <File>
               <FileName>Debug.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\Debug.c</FilePath>
+            </File>
+            <File>
+              <FileName>SCCB.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\SCCB.c</FilePath>
             </File>
             <File>
               <FileName>main.c</FileName>
@@ -440,11 +440,6 @@
               <FileName>stm32f4xx_hal_dcmi_ex.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dcmi_ex.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f4xx_hal_dma2d.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma2d.c</FilePath>
             </File>
             <File>
               <FileName>stm32f4xx_hal_tim.c</FileName>

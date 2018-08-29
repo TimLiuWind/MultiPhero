@@ -20,21 +20,20 @@ void SendFrames(uint8_t imagetype)
 	uint16_t temp16;
 	
 //  HAL_UART_Transmit(&huart1, (uint8_t *)&I_START, 2, 0xFFFF);
-	for(i=0;i<Image_Height;i++)
+	for(i=0;i<Image_Height;i=i+1)
 	{
-		for(j=0;j<Image_Width;j++)
+		for(j=0;j<Image_Width;j=j+1)
 		{
-//			temp8 = Image[CurrentImageSlot][i][j]&0xff;
+
+//		temp8 = Image[i][j]&0xff;
+//			temp8 = Image[i][j]>>8;
+//			if(temp8==0xff)
+//			{
+//				temp8 = 0xfe;
+//			}
+//			HAL_UART_Transmit(&huart1, (uint8_t *)&temp8, 1, 0xFFFF);
+//			temp8 = Image[i][j]>>8;
 			temp8 = Image[i][j]&0xff;
-//			temp8 = Image[CurrentImageSlot][i][j]>>8;
-			if(temp8==0xff)
-			{
-				temp8 = 0xfe;
-			}
-			HAL_UART_Transmit(&huart1, (uint8_t *)&temp8, 1, 0xFFFF);
-			temp8 = Image[i][j]>>8;
-//			temp8 = Image[CurrentImageSlot][i][j]>>8;
-//			temp8 = Image[CurrentImageSlot][i][j]&0xff;
 			if(temp8==0xff)
 			{
 				temp8 = 0xfe;

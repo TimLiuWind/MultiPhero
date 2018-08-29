@@ -50,8 +50,6 @@
 DCMI_HandleTypeDef hdcmi;
 DMA_HandleTypeDef hdma_dcmi;
 
-DMA2D_HandleTypeDef hdma2d;
-
 UART_HandleTypeDef huart4;
 UART_HandleTypeDef huart1;
 
@@ -64,10 +62,9 @@ uint8_t TestImage[20][30] = {0};
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_DMA_Init(void);
-static void MX_DMA2D_Init(void);
-static void MX_UART4_Init(void);
 static void MX_USART1_UART_Init(void);
 static void MX_DCMI_Init(void);
+static void MX_UART4_Init(void);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
@@ -115,10 +112,9 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_DMA_Init();
-  MX_DMA2D_Init();
-  MX_UART4_Init();
   MX_USART1_UART_Init();
   MX_DCMI_Init();
+  MX_UART4_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -151,6 +147,45 @@ int main(void)
 ////		printf("\n\r UART Printf Example: retarget the C library printf function to the UART\n\r");
 //		delay_ms(1000);
 //		printf("The %d th Frame and The %d th Image\n\r",FrameCounter,ImageCounter);
+		
+		
+//		//TEST
+//		uint8_t i,j;
+//		uint16_t test[2][2] = {0xf800, 0x07e0, 0x001f, 0xffff};
+//		
+//	  for(i=0;i<2;i++)
+//	 {
+//		for(j=0;j<2;j++)
+//		{
+////			temp8 = Image[CurrentImageSlot][i][j]&0xff;
+//			temp8 = test[i][j]&0xff;
+////			temp8 = Image[CurrentImageSlot][i][j]>>8;
+//			if(temp8==0xff)
+//			{
+//				temp8 = 0xfe;
+//			}
+//			HAL_UART_Transmit(&huart1, (uint8_t *)&temp8, 1, 0xFFFF);
+//			temp8 = test[i][j]>>8;
+////			temp8 = Image[CurrentImageSlot][i][j]>>8;
+////			temp8 = Image[CurrentImageSlot][i][j]&0xff;
+//			if(temp8==0xff)
+//			{
+//				temp8 = 0xfe;
+//			}
+//			HAL_UART_Transmit(&huart1, (uint8_t *)&temp8, 1, 0xFFFF);
+//		}		
+//	}
+//	temp8 = 0xff;
+//	HAL_UART_Transmit(&huart1, (uint8_t *)&temp8, 1, 0xFFFF);
+//	delay_ms(500);
+//		
+//		//test end
+//		
+		
+		
+		
+		
+		
 		if(ImageReady==1)
 		{
 			Camera_StopCapture();
@@ -166,6 +201,7 @@ int main(void)
 //			temp8 = 0xff;
 //			HAL_UART_Transmit(&huart1, (uint8_t *)&temp8, 1, 0xFFFF);
 			SendFrames(RGB565);
+			
 			while(Camera_StartCapture())
 			{
 				HAL_GPIO_TogglePin(LED1_GPIO_Port,LED1_Pin);
@@ -177,7 +213,7 @@ int main(void)
 //			printf("\r\n0x1234\r\n");
 //			printf("Imagslot = %d\r\n",CurrentImageSlot);
 //			printf("pixel=%d\r\n",Image[12][14]);
-			HAL_GPIO_TogglePin(LED2_GPIO_Port,LED2_Pin);
+//			HAL_GPIO_TogglePin(LED2_GPIO_Port,LED2_Pin);
 		}
 		 
 	}
@@ -272,36 +308,12 @@ static void MX_DCMI_Init(void)
 
 }
 
-/* DMA2D init function */
-static void MX_DMA2D_Init(void)
-{
-
-  hdma2d.Instance = DMA2D;
-  hdma2d.Init.Mode = DMA2D_M2M;
-  hdma2d.Init.ColorMode = DMA2D_OUTPUT_ARGB8888;
-  hdma2d.Init.OutputOffset = 0;
-  hdma2d.LayerCfg[1].InputOffset = 0;
-  hdma2d.LayerCfg[1].InputColorMode = DMA2D_INPUT_ARGB8888;
-  hdma2d.LayerCfg[1].AlphaMode = DMA2D_NO_MODIF_ALPHA;
-  hdma2d.LayerCfg[1].InputAlpha = 0;
-  if (HAL_DMA2D_Init(&hdma2d) != HAL_OK)
-  {
-    _Error_Handler(__FILE__, __LINE__);
-  }
-
-  if (HAL_DMA2D_ConfigLayer(&hdma2d, 1) != HAL_OK)
-  {
-    _Error_Handler(__FILE__, __LINE__);
-  }
-
-}
-
 /* UART4 init function */
 static void MX_UART4_Init(void)
 {
 
   huart4.Instance = UART4;
-  huart4.Init.BaudRate = 38400;
+  huart4.Init.BaudRate = 115200;
   huart4.Init.WordLength = UART_WORDLENGTH_8B;
   huart4.Init.StopBits = UART_STOPBITS_1;
   huart4.Init.Parity = UART_PARITY_NONE;
@@ -371,7 +383,7 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOE, sI2C_SDA_Pin|sI2C_SCL_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOE, SCCB_SDA_Pin|SCCB_SCL_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, GPIO_PIN_RESET);
@@ -382,8 +394,8 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : sI2C_SDA_Pin sI2C_SCL_Pin */
-  GPIO_InitStruct.Pin = sI2C_SDA_Pin|sI2C_SCL_Pin;
+  /*Configure GPIO pins : SCCB_SDA_Pin SCCB_SCL_Pin */
+  GPIO_InitStruct.Pin = SCCB_SDA_Pin|SCCB_SCL_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM;

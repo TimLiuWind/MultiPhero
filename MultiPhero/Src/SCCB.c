@@ -17,7 +17,7 @@ void SCCB_SDA_OUT(void)
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM;
-  HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
+  HAL_GPIO_Init(SCCB_SDA_GPIO_Port, &GPIO_InitStruct);
 }
 
 void SCCB_SDA_IN(void)
@@ -29,7 +29,7 @@ void SCCB_SDA_IN(void)
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM;
-  HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
+  HAL_GPIO_Init(SCCB_SDA_GPIO_Port, &GPIO_InitStruct);
 }
 
 uint8_t SCCB_Start(void)
@@ -71,7 +71,7 @@ void SCCB_Stop(void)
 	delay_us(150);
 }
 
-void noAck(void)
+void SCCB_noAck(void)
 {	
 	SCCB_SDA_H;	
 	delay_us(150);	
@@ -108,7 +108,7 @@ uint8_t SCCB_Write(uint8_t m_data)
 		tem=1;//SDA=0
 	SCCB_SCL_L;	
 	delay_us(150);	
-    SCCB_SDA_OUT();
+  SCCB_SDA_OUT();
 	return tem;  
 }
 
@@ -129,7 +129,7 @@ uint8_t SCCB_Read(void)
 		SCCB_SCL_L;
 		delay_us(150);
 	}	
-    SCCB_SDA_OUT();
+  SCCB_SDA_OUT();
 	return read;
 }
 

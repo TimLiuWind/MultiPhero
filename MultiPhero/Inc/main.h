@@ -56,6 +56,8 @@
 #define SCCB_SDA_GPIO_Port GPIOE
 #define SCCB_SCL_Pin GPIO_PIN_3
 #define SCCB_SCL_GPIO_Port GPIOE
+#define ACC_INT_Pin GPIO_PIN_2
+#define ACC_INT_GPIO_Port GPIOC
 #define KEY0_Pin GPIO_PIN_0
 #define KEY0_GPIO_Port GPIOA
 #define KEY0_EXTI_IRQn EXTI0_IRQn
@@ -64,10 +66,18 @@
 #define KEY1_EXTI_IRQn EXTI1_IRQn
 #define LED1_Pin GPIO_PIN_2
 #define LED1_GPIO_Port GPIOA
+#define ACC_AD0_Pin GPIO_PIN_15
+#define ACC_AD0_GPIO_Port GPIOE
+#define sI2C_SDA_Pin GPIO_PIN_11
+#define sI2C_SDA_GPIO_Port GPIOB
 #define LED3_Pin GPIO_PIN_13
 #define LED3_GPIO_Port GPIOD
+#define ACC_nCS_Pin GPIO_PIN_8
+#define ACC_nCS_GPIO_Port GPIOC
 #define LED2_Pin GPIO_PIN_12
 #define LED2_GPIO_Port GPIOC
+#define sI2C_SCL_Pin GPIO_PIN_8
+#define sI2C_SCL_GPIO_Port GPIOB
 
 /* ########################## Assert Selection ############################## */
 /**

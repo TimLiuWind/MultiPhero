@@ -313,7 +313,7 @@ uint8_t Camera_ReadReg(uint8_t regID, __IO uint8_t *regDat)
 	}
 	delay_us(150);
   	*regDat=SCCB_Read();
-  	noAck();
+  	SCCB_noAck();
   	SCCB_Stop();
   	return 0;
 }

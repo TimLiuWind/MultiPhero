@@ -43,7 +43,9 @@
 /* USER CODE BEGIN Includes */
 #include "delay.h"
 #include "ColiasCamera.h"
+#include "MPU9250.h"
 #include "Debug.h"
+#include "sI2C.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -134,12 +136,21 @@ int main(void)
 			delay_ms(300);
 			HAL_GPIO_TogglePin(LED1_GPIO_Port,LED1_Pin);
 	}
-//	Camera_Window_Set(10,174,240,320);
-	while(Camera_StartCapture())
-	{
-		printf("DCMI_DMA ErrorStart!\n\r");
-	}
-	printf("DCMI_DMA Start!\n\r");
+	
+	
+//	while(MPU9250_init()){
+//			
+//			delay_ms(100);
+//			HAL_GPIO_TogglePin(LED1_GPIO_Port,LED1_Pin);
+//			delay_ms(300);
+//			HAL_GPIO_TogglePin(LED1_GPIO_Port,LED1_Pin);
+//	}
+
+//	while(Camera_StartCapture())
+//	{
+//		printf("DCMI_DMA ErrorStart!\n\r");
+//	}
+//	printf("DCMI_DMA Start!\n\r");
 	
 	while(1){
 //		HAL_GPIO_TogglePin(LED2_GPIO_Port,LED2_Pin);
@@ -180,8 +191,11 @@ int main(void)
 //	delay_ms(500);
 //		
 //		//test end
-//		
-		
+//	
+	  uint8_t who_am_i=0,state=0;
+   	state = MPU_ReadReg(0x75, &who_am_i);
+		printf("MPU9250_WHO_AM_I = %d, state=%d\n\r", who_am_i, state);
+		delay_ms(200);
 		
 		
 		
@@ -377,22 +391,25 @@ static void MX_GPIO_Init(void)
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOE_CLK_ENABLE();
   __HAL_RCC_GPIOH_CLK_ENABLE();
-  __HAL_RCC_GPIOA_CLK_ENABLE();
-  __HAL_RCC_GPIOD_CLK_ENABLE();
   __HAL_RCC_GPIOC_CLK_ENABLE();
+  __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
+  __HAL_RCC_GPIOD_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOE, SCCB_SDA_Pin|SCCB_SCL_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOE, SCCB_SDA_Pin|SCCB_SCL_Pin|ACC_AD0_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, sI2C_SDA_Pin|sI2C_SCL_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(LED3_GPIO_Port, LED3_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOC, ACC_nCS_Pin|LED2_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : SCCB_SDA_Pin SCCB_SCL_Pin */
   GPIO_InitStruct.Pin = SCCB_SDA_Pin|SCCB_SCL_Pin;
@@ -400,6 +417,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : ACC_INT_Pin */
+  GPIO_InitStruct.Pin = ACC_INT_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(ACC_INT_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : KEY0_Pin KEY1_Pin */
   GPIO_InitStruct.Pin = KEY0_Pin|KEY1_Pin;
@@ -414,12 +437,33 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM;
   HAL_GPIO_Init(LED1_GPIO_Port, &GPIO_InitStruct);
 
+  /*Configure GPIO pin : ACC_AD0_Pin */
+  GPIO_InitStruct.Pin = ACC_AD0_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM;
+  HAL_GPIO_Init(ACC_AD0_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : sI2C_SDA_Pin sI2C_SCL_Pin */
+  GPIO_InitStruct.Pin = sI2C_SDA_Pin|sI2C_SCL_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
   /*Configure GPIO pin : LED3_Pin */
   GPIO_InitStruct.Pin = LED3_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM;
   HAL_GPIO_Init(LED3_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : ACC_nCS_Pin */
+  GPIO_InitStruct.Pin = ACC_nCS_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(ACC_nCS_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PA8 */
   GPIO_InitStruct.Pin = GPIO_PIN_8;
